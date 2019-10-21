@@ -1,0 +1,1 @@
+# Citrix XenCenter Plugin Specification
