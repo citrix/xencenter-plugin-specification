@@ -1,51 +1,79 @@
 # Commands
 
-In your configuration file, each MenuItem feature has a single command as a child. This child defines which executable or script to run when the user clicks the MenuItem.
+In your configuration file, each MenuItem feature has a single command as a child.
+This child defines which executable or script to run when the user clicks the MenuItem.
 
-This version of the XenCenter plug-in specification includes the following types of command:
+This version of the XenCenter plug-in specification includes the following types
+of command:
 
--  Shell
--  PowerShell
--  XenServerPowerShell
+- Shell
+- PowerShell
+- XenServerPowerShell
 
-PowerShell and XenServerPowerShell are extensions of Shell and inherit all the properties of Shell. However, they both have extra features which make it easier to run PowerShell scripts. For example, XenServerPowerShell commands automatically load the Citrix Hypervisor PowerShell Module (XenServerPSModule) before executing.
+PowerShell and XenServerPowerShell are extensions of Shell and inherit all the
+properties of Shell. However, they both have extra features which make it easier
+to run PowerShell scripts. For example, XenServerPowerShell commands automatically
+load the Citrix Hypervisor PowerShell Module (XenServerPSModule) before executing.
 
-![PowerShell and XenServerPowerShell extend Shell](media/shells.png)
+![Shells](media/shells.png)
+**Figure** *PowerShell and XenServerPowerShell extend Shell*
 
 ## Parameter Sets
 
-A parameter set is a collection of four parameters that describe which items are selected in the XenCenter resource list when your command is executed.
+A parameter set is a collection of four parameters that describe which items are
+selected in the XenCenter resource list when your command is executed.
 
-While each command has its own way of receiving parameters from XenCenter, the parameters are always the same. They are delivered in sets of four that describe the selection in the XenCenter resource list: `url`, `sessionRef`, `class`, and `objUuid`.
+While each command has its own way of receiving parameters from XenCenter, the
+parameters are always the same. They are delivered in sets of four that describe
+the selection in the XenCenter resource list: `url`, `sessionRef`, `class`, and
+`objUuid`.
 
 Two of the parameters are used to allow communication to the relevant server:
 
--  The `url` parameter indicates the address of the applicable standalone server or pool master.
--  The `sessionRef` parameter is the session opaque ref that can be used to communicate with this server.
+- The `url` parameter indicates the address of the applicable standalone server
+or pool master.
+- The `sessionRef` parameter is the session opaque ref that can be used to
+communicate with this server.
 
 Two of the parameters are used to describe which specific object is selected:
 
--  The `class` parameter is used to show the class of the object which is selected in the resource list.
--  The `objUuid` parameter is the UUID of this selected object.
+- The `class` parameter is used to show the class of the object which is selected
+in the resource list.
+- The `objUuid` parameter is the UUID of this selected object.
 
-**Example:** If you select both the local SR from a standalone server (Server A) and the pool node from a separate pool (Pool B), two parameter sets are passed into your plug-in:
+**Example:** If you select both the local SR from a standalone server (Server A)
+and the pool node from a separate pool (Pool B), two parameter sets are passed
+into your plug-in:
 
-![An example of two sets of four parameters.](media/example-fourparams.png)
+![Four-parameter example](media/example-fourparams.png)
+**Figure** *An example of two sets of four parameters.*
 
-In general, the plug-in receives one parameter set per object selected in the tree view, with two exceptions.
+In general, the plug-in receives one parameter set per object selected in the
+tree view, with two exceptions.
 
--  Selecting a folder adds a parameter set per object in the folder, not the folder itself.
--  Selected the XenCenter node adds a parameter set for each stand-alone server or pool that is connected, with the `class` and `objUuid` parameters marked with the keyword 'blank'.
+- Selecting a folder adds a parameter set per object in the folder, not the
+folder itself.
+- Selected the XenCenter node adds a parameter set for each stand-alone server
+or pool that is connected, with the `class` and `objUuid` parameters marked with
+the keyword 'blank'.
 
-    If the XenCenter node is selected, the plug-in receives the necessary information to perform actions on any connected servers. However, selecting this node provides no contextual information about what the user wants to target. The 'blank' keyword is used for the parameters that identify specifically what is selected.
+    If the XenCenter node is selected, the plug-in receives the necessary information
+    to perform actions on any connected servers. However, selecting this node
+    provides no contextual information about what the user wants to target. The
+    'blank' keyword is used for the parameters that identify specifically what
+    is selected.
 
-**Example:** If you connect to Server A and Pool B from the previous example, and you selected both the XenCenter node and the local storage on Server A, you get the following parameter sets:
+**Example:** If you connect to Server A and Pool B from the previous example,
+and you selected both the XenCenter node and the local storage on Server A, you
+get the following parameter sets:
 
-![An example of multiple sets of parameters](media/example-paramsets.png)
+![Multi-parameter example](media/example-paramsets.png)
+**Figure** *An example of multiple sets of parameters*
 
 ## Shell
 
-Shell commands are the most generic command type and launch executables, batch files, and other files which have a registered Windows extension.
+Shell commands are the most generic command type and launch executables, batch
+files, and other files which have a registered Windows extension.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -75,7 +103,10 @@ Shell commands are the most generic command type and launch executables, batch f
 
 ### Shell Parameters
 
-For Shell commands the parameter sets are passed through as command-line parameters to the batch file or executable. Any extra parameters supplied using the `param` XML attribute (see the following table) are first in the list of parameters, followed by sets of four command line parameters representing each parameter set.
+For Shell commands the parameter sets are passed through as command-line parameters
+to the batch file or executable. Any extra parameters supplied using the `param`
+XML attribute (see the following table) are first in the list of parameters,
+followed by sets of four command line parameters representing each parameter set.
 
 ### Shell XML Attributes
 
@@ -97,7 +128,9 @@ For more information, see the section on RBAC protection.
 
 ## PowerShell
 
-PowerShell commands specifically target PowerShell scripts and have several enhancements over a basic Shell command to help you access the various parameters XenCenter can pass to your plug-in.
+PowerShell commands specifically target PowerShell scripts and have several
+enhancements over a basic Shell command to help you access the various parameters
+XenCenter can pass to your plug-in.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -129,26 +162,31 @@ PowerShell commands specifically target PowerShell scripts and have several enha
 
 ### PowerShell Object Information Array
 
-Information regarding the target items selected in the XenCenter resource list are stored in a PowerShell variable for easy access by your script. Inside the `$objInfoArray` variable is an array of hash maps, each representing a parameter set. Use the following keys to access the parameters in each hash map:
+Information regarding the target items selected in the XenCenter resource list
+are stored in a PowerShell variable for easy access by your script. Inside the
+`$objInfoArray` variable is an array of hash maps, each representing a parameter
+set. Use the following keys to access the parameters in each hash map:
 
--  `url`
--  `sessionRef`
--  `class`
--  `objUuid`
+- `url`
+- `sessionRef`
+- `class`
+- `objUuid`
 
 ```powershell
 [reflection.assembly]::loadwithpartialname('system.windows.forms')
 
 foreach ($objInfo in $objInfoArray)
 {
-    $outputString = "url={0}, sessionRef={1}, objName={2}, objUuid={3}" -f $objInfo["url"], $objInfo["uuid"], $objInfo["class"], $objInfo["objUuid"]
+    $outputString = "url={0}, sessionRef={1}, objName={2}, objUuid={3}" `
+      -f $objInfo["url"], $objInfo["uuid"], $objInfo["class"], $objInfo["objUuid"]
     [system.Windows.Forms.MessageBox]::show("Hello from {0}!" -f $outputString)
 }
 ```
 
 ### PowerShell Extra Parameter Array
 
-Any additional parameters you define using the `param` XML attribute inherited from Shell are stored in the `$ParamArray` variable as a simple array.
+Any additional parameters you define using the `param` XML attribute inherited
+from Shell are stored in the `$ParamArray` variable as a simple array.
 
 ```powershell
 [reflection.assembly]::loadwithpartialname('system.windows.forms')
@@ -163,7 +201,8 @@ foreach ($param in $ParamArray)
 
 > **Note:**
 >
-> The `filename` attribute inherited from Shell is required. Your plug-in only loads when this attribute points to a PowerShell script
+> The `filename` attribute inherited from Shell is required. Your plug-in only
+> loads when this attribute points to a PowerShell script.
 
 | Key      | Value         | Description                           | Optional/Required | Default        | Accepts Placeholders   |
 |----------|---------------|---------------------------------------|-------------------|----------------|------------------------|
@@ -173,7 +212,9 @@ foreach ($param in $ParamArray)
 
 ## XenServerPowerShell
 
-In addition to the features provided by the PowerShell Command, the XenServerPowerShell Command loads the Citrix Hypervisor PowerShell Module (XenServerPSModule before executing your target PowerShell script.
+In addition to the features provided by the PowerShell Command, the
+XenServerPowerShell Command loads the Citrix Hypervisor PowerShell Module
+(XenServerPSModule before executing your target PowerShell script.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -205,20 +246,25 @@ In addition to the features provided by the PowerShell Command, the XenServerPow
 
 ### XenServerPowerShell Initialization Details
 
-The full setup done to prepare your PowerShell environment for communicating with the server is in the Initialize-Environment script in your Citrix Hypervisor PowerShell Module (XenServerPSModule) installation directory. When your target script begins executing, the following setup happens:
+The full setup done to prepare your PowerShell environment for communicating
+with the server is in the Initialize-Environment script in your Citrix Hypervisor
+PowerShell Module (XenServerPSModule) installation directory. When your target
+script begins executing, the following setup happens:
 
--  All the cmdlet aliases are initialized
--  The global session variable is initialized to store your session information
+- All the cmdlet aliases are initialized
+- The global session variable is initialized to store your session information
 
 ### XenServerPowerShell Parameters
 
-The parameter sets and extra parameters can be accessed through the `$objInfoArray` and the `$ParamArray` variables as detailed in the previous PowerShell Command section.
+The parameter sets and extra parameters can be accessed through the `$objInfoArray`
+and the `$ParamArray` variables as detailed in the previous PowerShell Command section.
 
 ### XenServerPowerShell XML Attributes
 
 > **Important:**
 >
-> The `filename` attribute inherited from Shell is required and your plug-in does only loads when it is set to point to a PowerShell script
+> The `filename` attribute inherited from Shell is required and your plug-in does
+> only loads when it is set to point to a PowerShell script
 
 | Key      | Value         | Description                                  | Optional/Required | Default | Accepts Placeholders |
 |----------|---------------|----------------------------------------------|-------------------|---------|----------------------|
@@ -228,9 +274,15 @@ The parameter sets and extra parameters can be accessed through the `$objInfoArr
 
 ## Preparing for Role Based Access Control (RBAC)
 
-If you define the methods that a command requires in your configuration file, the command can be prepared for when XenCenter connects to a server that uses Role Based Access Control.
+If you define the methods that a command requires in your configuration file,
+the command can be prepared for when XenCenter connects to a server that uses
+Role Based Access Control.
 
-If the user does not have permission to execute an API call on a server due to RBAC, the call fails with an `RBAC_PERMISSION_DENIED` exception. You can handle these exceptions from within the plug-in (examine the `ErrorDescription` field on the response for details). Alternatively, you can ask XenCenter to ensure that the user can execute all possible commands you might need before the plug-in is run:
+If the user does not have permission to execute an API call on a server due to
+RBAC, the call fails with an `RBAC_PERMISSION_DENIED` exception. You can handle
+these exceptions from within the plug-in (examine the `ErrorDescription` field
+on the response for details). Alternatively, you can ask XenCenter to ensure that
+the user can execute all possible commands you might need before the plug-in is run:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -256,21 +308,32 @@ If the user does not have permission to execute an API call on a server due to R
 </XenCenterPlugin>
 ```
 
-The `required_methods` attribute accepts a comma separated list of API calls in the format `object.method`.
+The `required_methods` attribute accepts a comma separated list of API calls in
+the format `object.method`.
 
-If the user is operating on an RBAC enabled server, XenCenter checks that the user can execute all of these API calls on their current role. If they can't, the plug-in is not launched and an error displayed:
+If the user is operating on an RBAC enabled server, XenCenter checks that the
+user can execute all of these API calls on their current role. If they can't,
+the plug-in is not launched and an error displayed:
 
-![An error in the Logs tab. The error is "Your current role is not authorized to perform this action on POOL NAME".](media/rbac-error.png)
+![Rbac error](media/rbac-error.png)
+**Figure** *An error in the Logs tab. The error is "Your current role is not
+authorized to perform this action on POOL NAME".*
 
 ### Preparing for RBAC - Key White Lists
 
 > **Important:**
 >
-> -  Key white lists apply to advanced XenCenter keys. Only modify these lists if you know what you are doing.
+> - Key white lists apply to advanced XenCenter keys. Only modify these lists
+> if you know what you are doing.
 
-In general, when operating under RBAC your role restricts you to modifying the `other-config` map on objects which are directly relevant to your role. For example, a VM Admin can modify the `other-config` map on a VM, but it cannot modify the `other-config` map on a server.
+In general, when operating under RBAC your role restricts you to modifying the
+`other-config` map on objects which are directly relevant to your role. For
+example, a VM Admin can modify the `other-config` map on a VM, but it cannot
+modify the `other-config` map on a server.
 
-Some specific keys have been white listed to all roles above read-only. This setting allows XenCenter to set some advanced keys on `other-config` maps that are otherwise inaccessible to the user's role:
+Some specific keys have been white listed to all roles above read-only. This
+setting allows XenCenter to set some advanced keys on `other-config` maps that
+are otherwise inaccessible to the user's role:
 
 | Target object                    | Key                       |
 |----------------------------------|---------------------------|
@@ -293,9 +356,13 @@ syntax:
 
 ## Placeholders
 
-If you use placeholders in your strings, XenCenter can call different functions, use different URLs, or provide different parameters based on what object is selected in the resource list.
+If you use placeholders in your strings, XenCenter can call different functions,
+use different URLs, or provide different parameters based on what object is
+selected in the resource list.
 
-When an XML attribute is marked as being able to accept placeholders you can leave wildcards for XenCenter to fill in based on the properties of the object that is selected in the resource list.
+When an XML attribute is marked as being able to accept placeholders you can leave
+wildcards for XenCenter to fill in based on the properties of the object that is
+selected in the resource list.
 
 | Placeholder              | Description                                                              |
 |--------------------------|--------------------------------------------------------------------------|
@@ -324,11 +391,19 @@ When an XML attribute is marked as being able to accept placeholders you can lea
 | `{$folder}`                | The immediate parent folder of the selected object                       |
 | `{$folders}`               | Comma-separated list of all the ancestor folders of the selected object  |
 
-If the user has selected more than one target for the plug-in (by multiselect or by selecting a folder), it is not possible for XenCenter to know which object to use for the placeholder context. In a multi-target scenario all placeholders are substituted with the keyword `multi_target`. The plug-in can use this information to detect this situation.
+If the user has selected more than one target for the plug-in (by multiselect or
+by selecting a folder), it is not possible for XenCenter to know which object to
+use for the placeholder context. In a multi-target scenario all placeholders are
+substituted with the keyword `multi_target`. The plug-in can use this information
+to detect this situation.
 
-Also, if there has been an error filling in a particular placeholder then the keyword `null` is substituted in to indicate the error. One example of where you see this keyword is if the XenCenter node was selected, which has no object properties to fill in.
+Also, if there has been an error filling in a particular placeholder then the
+keyword `null` is substituted in to indicate the error. One example of where you
+see this keyword is if the XenCenter node was selected, which has no object
+properties to fill in.
 
-**Example:** A community group adds their HTML help guides into a XenCenter tab based on which object is selected
+**Example:** A community group adds their HTML help guides into a XenCenter tab
+based on which object is selected
 
 ```xml
 <XenCenterPlugin

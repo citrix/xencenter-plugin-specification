@@ -1,29 +1,37 @@
 # Features
 
-Each XenCenter plug-in can define multiple features to extend the functionality of XenCenter for specific tasks. These features are the new menu items and tab pages you are adding to XenCenter.
+Each XenCenter plug-in can define multiple features to extend the functionality
+of XenCenter for specific tasks. These features are the new menu items and tab
+pages you are adding to XenCenter.
 
-![The Feature element has child elements TabPageFeature, MenuItemFeature, and GroupMenuItemFeature.](media/features-hierarchy.png)
+![Featire hierarchy](media/features-hierarchy.png)
+**Figure** *The Feature element has child elements TabPageFeature, MenuItemFeature,
+and GroupMenuItemFeature.*
 
-GroupMenuItem features are available to help organize your MenuItem features, but rely on MenuItem features to provide any functionality.
+GroupMenuItem features are available to help organize your MenuItem features,
+but rely on MenuItem features to provide any functionality.
 
 ## XML Attributes
 
-All features share some common optional and required attributes that enable you to customize their appearance and functionality.
+All features share some common optional and required attributes that enable you
+to customize their appearance and functionality.
 
 > **Important:**
 >
-> The `name` attribute is required for all features. If it is not set, your plug-in fails to load.
+> The `name` attribute is required for all features. If it is not set, your
+plug-in fails to load.
 
 | Key         | Value    | Description | Optional/Required | Default  |
 |-------------|----------|-------------|-------------------|----------|
 | `name`        | [string] | The name for this feature. If the `label` attribute is not set, this name is used for display purposes in XenCenter. It is also used for logging. | Required | - |
-| `label       | [string] | Used as a `name` replacement for user facing display purposes in XenCenter. | Optional | - |
+| `label`       | [string] | Used as a `name` replacement for user facing display purposes in XenCenter. | Optional | - |
 | `search`      | [string] | The UUID of a XenSearch defined in your configuration file. It is used for setting enablement and visibility of this feature. | Optional | - |
 | `description` | [string] | A short description of this feature.| Optional | - |
 | `tooltip`     | [string] | Any text you want to display a tooltip for this feature. | Optional | - |
 | `icon`        | [string] | A relative path from your XenCenter install directory to an icon image for this feature. It is displayed at size 16x16. | Optional | - |
 
-**Example:** A configuration file with a MenuItem feature using some of the common feature XML attributes
+**Example:** A configuration file with a MenuItem feature using some of the common
+feature XML attributes
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -81,16 +89,18 @@ All features share some common optional and required attributes that enable you 
 
 ## MenuItem and GroupMenuItem
 
-Plug-in authors can use MenuItem and GroupMenuItem features to add menu items in XenCenter. GroupMenuItems collect your menu items under sub menus and MenuItems launch your plug-in commands.
+Plug-in authors can use MenuItem and GroupMenuItem features to add menu items in
+XenCenter. GroupMenuItems collect your menu items under sub menus and MenuItems
+launch your plug-in commands.
 
-**Figure:** An example hierarchy of menu items that launch various plug-in commands
+![Example menu item hierarchy](media/example-menuitem-hierarchy.png)
+**Figure:** *An example hierarchy of menu items that launch various plug-in commands.*
 
-![An example hierarchy of menu items that launch various plug-in commands](media/example-menuitem-hierarchy.png)
+- Each GroupMenuItem can have multiple MenuItem children
+- Each MenuItem has exactly one child command which runs a target executable or script.
 
--  Each GroupMenuItem can have multiple MenuItem children
--  Each MenuItem has exactly one child command which runs a target executable or script.
-
-***Example:*** A configuration file detailing the MenuItems and GroupMenuItems shown in the preceding figure
+***Example:*** A configuration file detailing the MenuItems and GroupMenuItems
+shown in the preceding figure
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -137,16 +147,23 @@ Plug-in authors can use MenuItem and GroupMenuItem features to add menu items in
 </XenCenterPlugin>
 ```
 
-MenuItems which are children of a GroupMenuItem appear as a sub menu under their group. The MenuItem validation logic still requires that the 'menu' attribute is set for these sub MenuItems. However, the menu attribute on the parent GroupMenuItem dictates their location.
+MenuItems which are children of a GroupMenuItem appear as a sub menu under their
+group. The MenuItem validation logic still requires that the 'menu' attribute is
+set for these sub MenuItems. However, the menu attribute on the parent GroupMenuItem
+dictates their location.
 
-![The File menu shows a menu item called Hello World with subitems called Hello PowerShell World and Hello Batch World.](media/menuitems-screenshot.png)
+![Menu items](media/menuitems-screenshot.png)
+**Figure** *The File menu shows a menu item called Hello World with subitems
+called Hello PowerShell World and Hello Batch World.*
 
 ## MenuItem XML Attributes
 
 > **Important:**
 >
-> -  The inherited feature attribute 'name' is required. If it is not set, your plug-in fails to load.
-> -  Each MenuItem feature must contain **exactly one** child node describing a XenCenter plug-in command, otherwise your plug-in does not load
+> - The inherited feature attribute 'name' is required. If it is not set, your
+> plug-in fails to load.
+> - Each MenuItem feature must contain **exactly one** child node describing a
+> XenCenter plug-in command, otherwise your plug-in does not load
 
 | Key         | Value | Description                             | Optional/Required | Default |
 |-------------|-------|-----------------------------------------|-------------------|---------|
@@ -159,7 +176,8 @@ MenuItems which are children of a GroupMenuItem appear as a sub menu under their
 
 > **Important:**
 >
-> The inherited feature attribute 'name' is required. If it is not set, your plug-in fails to load.
+> The inherited feature attribute 'name' is required. If it is not set, your
+> plug-in fails to load.
 
 Each GroupMenuItem feature can contain as many MenuItem child nodes as you would like.
 
@@ -171,20 +189,26 @@ Each GroupMenuItem feature can contain as many MenuItem child nodes as you would
 
 ## TabPage
 
-Tab page features load a URL to display as an extra tab inside XenCenter. These tabs can be used to allow access to web management consoles or to add extra user interface features into XenCenter.
+Tab page features load a URL to display as an extra tab inside XenCenter. These
+tabs can be used to allow access to web management consoles or to add extra user
+interface features into XenCenter.
 
 > **Note:**
 >
-> All local HTML and JavaScript examples in this section use the modified jQuery libraries for RPC calls through XenCenter in addition to the jQuery base library v1.3.2
+> All local HTML and JavaScript examples in this section use the modified jQuery
+> libraries for RPC calls through XenCenter in addition to the jQuery base library
+? v1.3.2
 
-![A screenshot of the message board example plug-in.](media/messageboard-screenshot.png)
+![Message board example](media/messageboard-screenshot.png)
+**Figure** *A screenshot of the message board example plug-in.*
 
 ### TabPage XML Attributes
 
 > **Important:**
 >
-> -  The inherited feature attribute 'name' is required. If it is not set, your plug-in fails to load.
-> -  The 'url' attribute is required. If it is not set, your plug-in fails to load.
+> - The inherited feature attribute 'name' is required. If it is not set, your
+> plug-in fails to load.
+> - The 'url' attribute is required. If it is not set, your plug-in fails to load.
 
 | Key            | Value         | Description                             | Optional/Required | Default  |
 |----------------|---------------|-----------------------------------------|-------------------|----------|
@@ -199,14 +223,17 @@ Tab page features load a URL to display as an extra tab inside XenCenter. These 
 
 ### TabPage Javascript API
 
-Using some modified jQuery libraries to pass XML-RPC calls through XenCenter it is possible for your tab page to communicate with the server using JavaScript. XenCenter provides a scripting object which contains the following public variables:
+Using some modified jQuery libraries to pass XML-RPC calls through XenCenter it
+is possible for your tab page to communicate with the server using JavaScript.
+XenCenter provides a scripting object which contains the following public variables:
 
--  SessionUuid
--  SessionUrl
--  SelectedObjectType
--  SelectedObjectRef
+- SessionUuid
+- SessionUrl
+- SelectedObjectType
+- SelectedObjectRef
 
-These variables can be accessed through the `window.external` object in JavaScript and used to make server API calls:
+These variables can be accessed through the `window.external` object in JavaScript
+and used to make server API calls:
 
 ```javascript
 // Retrieves the other config map for the currently selected XenCenter
@@ -220,7 +247,8 @@ function GetOtherConfig(Callback)
     function GetCurrentOtherConfig()
 
     {
-        var toExec = "tmprpc." + window.external.SelectedObjectType + ".get_other_config(Callback, window.external.SessionUuid window.external.SelectedObjectRef);";
+        var toExec = "tmprpc." + window.external.SelectedObjectType +
+            ".get_other_config(Callback, window.external.SessionUuid window.external.SelectedObjectRef);";
 
         eval(toExec);
 
@@ -239,15 +267,21 @@ function GetOtherConfig(Callback)
 
 In this example we create an RPC object using 4 parameters:
 
-1.  Notifying that the RPC call is carrying XML (as opposed to JSON)
+1. Notifying that the RPC call is carrying XML (as opposed to JSON)
 
-2.  The function to execute (`GetCurrentOtherConfig`) which fires off an API call - the modified jQuery library packages up the API call as an XML-RPC request and hands it to XenCenter.
+2. The function to execute (`GetCurrentOtherConfig`) which fires off an API call;
+the modified jQuery library packages up the API call as an XML-RPC request and
+hands it to XenCenter.
 
-    Notice that the function name for the callback is passed as an extra first parameter to the API call.
+    Notice that the function name for the callback is passed as an extra first
+    parameter to the API call.
 
-3.  We don't specify a version number for the XML (`null`) which is interpreted as 1.0.
+3. We don't specify a version number for the XML (`null`) which is interpreted
+as 1.0.
 
-4.  We pass a description of the API call we want to make inside `GetCurrentOtherConfig` so the appropriate objects are created for the function to access.
+4. We pass a description of the API call we want to make inside
+`GetCurrentOtherConfig` so the appropriate objects are created for the function
+to access.
 
 #### Required Functions
 
@@ -255,7 +289,9 @@ In this example we create an RPC object using 4 parameters:
 >
 > It is required that you define a `RefreshPage` function in your JavaScript.
 
-XenCenter calls this function every time it reloads the HTML page or adjusts the variables on the scripting object. Structure your code so that the `RefreshPage` function can easily tear down and rebuild the state of the page:
+XenCenter calls this function every time it reloads the HTML page or adjusts the
+variables on the scripting object. Structure your code so that the `RefreshPage`
+function can easily tear down and rebuild the state of the page:
 
 ```javascript
 $(document).ready(RefreshPage);
@@ -274,18 +310,25 @@ function RefreshPage()
 }
 ```
 
-Setting the function to be called at `$(document).ready()` ensures there are no race conditions between XenCenter signaling to the page to refresh and the page itself being ready to receive these requests.
+Setting the function to be called at `$(document).ready()` ensures there are no
+race conditions between XenCenter signaling to the page to refresh and the page
+itself being ready to receive these requests.
 
 #### Receiving XenCenter Callbacks
 
-When you make an RPC object and get XenCenter to pass through an API call to the server, you specify a callback function. When the XML-RPC request returns from the server, XenCenter invokes the callback function and passes in a JSON object that contains the result as a parameter. Look at `RefreshDescription` in the following example:
+When you make an RPC object and get XenCenter to pass through an API call to the
+server, you specify a callback function. When the XML-RPC request returns from
+the server, XenCenter invokes the callback function and passes in a JSON object
+that contains the result as a parameter. Look at `RefreshDescription` in the
+following example:
 
 ```javascript
 // The result object of any xmlrpc call to the server contains:
 // - a result field which indicates whether it was succesfull or not,
 // - a value field containing any returned data in json
 // - an error description field containing any error information
-// This function checks for success, displays any relevant errors, and returns a json object that corresponds to the value field
+// This function checks for success, displays any relevant errors, and returns
+// a json object that corresponds to the value field
 
 function CheckResult(Result)
 {
@@ -311,13 +354,15 @@ function CheckResult(Result)
 }
 
 // DESCRIPTION UPDATE SECTION
-// This pair of methods chain to retrieve the description field from the server and display it. There is no writing to the description field on the server.
+// This pair of methods chain to retrieve the description field from the server
+// and display it. There is no writing to the description field on the server.
 function RefreshDescription()
 {
     var tmprpc;
     function RetrieveDescription()
     {
-        var toExec = "tmprpc." + window.external.SelectedObjectType + ".get_name_description(ShowDescription, window.external.SessionUuid, window.external.SelectedObjectRef);";
+        var toExec = "tmprpc." + window.external.SelectedObjectType +
+            ".get_name_description(ShowDescription, window.external.SessionUuid, window.external.SelectedObjectRef);";
 
         eval(toExec);
     }
@@ -343,8 +388,14 @@ function ShowDescription(DescriptionResult)
 
 ### TabPage Replacement Consoles
 
-This feature allows you to specify that your tab page feature replaces the standard console tab page in XenCenter. It is often used when a VM has its own web interface and the standard console tab page does not need to be seen.
+This feature allows you to specify that your tab page feature replaces the
+standard console tab page in XenCenter. It is often used when a VM has its own
+web interface and the standard console tab page does not need to be seen.
 
-To activate this feature, add the attribute `console="True"` to the `TabPageFeature` tag in your configuration file.
+To activate this feature, add the attribute `console="True"` to the `TabPageFeature`
+tag in your configuration file.
 
-If XenCenter cannot reach the webpage you have specified in your tab page feature, the standard console tab page is returned and your tab page feature is hidden. If the tab page feature can be reached later on, it is automatically restored, and the standard console tab page hidden.
+If XenCenter cannot reach the webpage you have specified in your tab page feature,
+the standard console tab page is returned and your tab page feature is hidden. If
+the tab page feature can be reached later on, it is automatically restored, and
+the standard console tab page hidden.
