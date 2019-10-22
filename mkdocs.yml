@@ -35,6 +35,7 @@ extra:
     - type: linkedin
       link: https://www.linkedin.com/company/citrix/
   search:
+    language: 'en'
     tokenizer: '[\s\-\.]+'
 
 markdown_extensions:
