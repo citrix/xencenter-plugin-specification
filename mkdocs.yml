@@ -1,46 +1,29 @@
-# Project information
-site_name: Citrix XenCenter plugin specification
-site_title: Developer Docs
-site_description:
-site_author:
-site_url: 
+site_name: Citrix XenCenter Plugin Specification
+site_description: Citrix XenCenter Plugin Specification
+site_title: Developer Documentation
 
-# Repository
-repo_name:
-repo_url: 
-edit_uri: 
-
-# Copyright
 copyright: 'Copyright &copy; 1999-2019 Citrix Systems, Inc. All rights reserved. '
 
 extra_css:
   - 'assets/stylesheets/extra.css'
 
-# Configuration
 theme:
   name: null
   custom_dir: material
-
-  # 404 page
-  static_templates:
-    - 404.html
-
-  # Don't include MkDocs' JavaScript
   include_search_page: false
   search_index_only: true
-
-  # Default values, taken from mkdocs_theme.yml
   language: en
   feature:
     tabs: false
   palette:
     primary: white
     accent: blue
-  font: false
+  font:
+    text: Roboto
+    code: Roboto Mono
   favicon: /media/favicon.ico
   logo: https://developer-docs.citrix.com/_static/Citrix_Logo_Black.png
 
-# Customization
 extra:
   social:
     - type: youtube
@@ -55,12 +38,14 @@ extra:
 markdown_extensions:
   - admonition
   - codehilite
-  - toc:
-      permalink: true
+  - toc
   - footnotes
   - meta
-  - extra
 
-# Page tree
 nav:
-  - Home: index.md
+- Introduction: index.md
+- XML Configuration File: xml-configuration.md
+- Features: features.md
+- Commands: commands.md
+- Resources and Internationalization: resources-and-internationalization.md
+- Deploying: deploying.md
