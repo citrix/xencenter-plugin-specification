@@ -6,22 +6,22 @@ Each XenCenter plug-in can define multiple features to extend the functionality 
 
 GroupMenuItem features are available to help organize your MenuItem features, but rely on MenuItem features to provide any functionality.
 
-## Features: XML Attributes
+## XML Attributes
 
-All of the features mentioned above share some common optional and required attributes that allow you to customize their appearance and functionality.
+All features share some common optional and required attributes that enable you to customize their appearance and functionality.
 
 > **Important:**
 >
-> The 'name' attribute is required for all features; your plug-in will not load unless it is set.
+> The `name` attribute is required for all features. If it is not set, your plug-in fails to load.
 
 | Key         | Value    | Description | Optional/Required | Default  |
 |-------------|----------|-------------|-------------------|----------|
-| name        | [string] | The name for this feature. If label is not set, this name will be used for display purposes in XenCenter. It is also used for logging. | Required | - |
-| label       | [string] | Used as a 'name' replacement for user facing display purposes in XenCenter. | Optional | - |
-| search      | [string] | The uuid of a XenSearch defined in your configuration file. It will be used for setting enablement and visibility of this feature. |Optional | - |
-| description | [string] | A short description of this feature.| Optional | - |
-| tooltip     | [string] | Any text you wish to display a tooltip for this feature. | Optional | - |
-| icon        | [string] | A relative path from your XenCenter install directory to an icon image for this feature. It will be displayed at size 16x16. | Optional | - |
+| `name`        | [string] | The name for this feature. If the `label` attribute is not set, this name is used for display purposes in XenCenter. It is also used for logging. | Required | - |
+| `label       | [string] | Used as a `name` replacement for user facing display purposes in XenCenter. | Optional | - |
+| `search`      | [string] | The UUID of a XenSearch defined in your configuration file. It is used for setting enablement and visibility of this feature. | Optional | - |
+| `description` | [string] | A short description of this feature.| Optional | - |
+| `tooltip`     | [string] | Any text you want to display a tooltip for this feature. | Optional | - |
+| `icon`        | [string] | A relative path from your XenCenter install directory to an icon image for this feature. It is displayed at size 16x16. | Optional | - |
 
 **Example:** A configuration file with a MenuItem feature using some of the common feature XML attributes
 
@@ -79,7 +79,7 @@ All of the features mentioned above share some common optional and required attr
 </XenCenterPlugin>
 ```
 
-## Features: MenuItem and GroupMenuItem
+## MenuItem and GroupMenuItem
 
 Plug-in authors can use MenuItem and GroupMenuItem features to add menu items in XenCenter. GroupMenuItems collect your menu items under sub menus and MenuItems launch your plug-in commands.
 
@@ -90,7 +90,7 @@ Plug-in authors can use MenuItem and GroupMenuItem features to add menu items in
 -  Each GroupMenuItem can have multiple MenuItem children
 -  Each MenuItem has exactly one child command which runs a target executable or script.
 
-***Example:*** A configuration file detailing the MenuItems and GroupMenuItems shown in the figure above
+***Example:*** A configuration file detailing the MenuItems and GroupMenuItems shown in the preceding figure
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -137,77 +137,76 @@ Plug-in authors can use MenuItem and GroupMenuItem features to add menu items in
 </XenCenterPlugin>
 ```
 
-MenuItems which are children of a GroupMenuItem appear as a sub menu under their group. The MenuItem validation logic still requires that the 'menu' attribute is set for these sub MenuItems, however their location
-is dictated by the menu attribute on the parent GroupMenuItem.
+MenuItems which are children of a GroupMenuItem appear as a sub menu under their group. The MenuItem validation logic still requires that the 'menu' attribute is set for these sub MenuItems. However, the menu attribute on the parent GroupMenuItem dictates their location.
 
-![The File menu shows a menu item called Hello World with subitems called Hello Powershell World and Hello Batch World.](media/menuitems-screenshot.png)
+![The File menu shows a menu item called Hello World with subitems called Hello PowerShell World and Hello Batch World.](media/menuitems-screenshot.png)
 
-## Features: MenuItem XML Attributes
+## MenuItem XML Attributes
 
 > **Important:**
 >
-> -  The inherited feature attribute 'name' is required and your plug-in will not load unless it is set
-> -  Each MenuItem feature must contain **exactly one** child node describing a XenCenter plug-in command, your plug-in will not load unless this is satisfied
+> -  The inherited feature attribute 'name' is required. If it is not set, your plug-in fails to load.
+> -  Each MenuItem feature must contain **exactly one** child node describing a XenCenter plug-in command, otherwise your plug-in does not load
 
 | Key         | Value | Description                             | Optional/Required | Default |
 |-------------|-------|-----------------------------------------|-------------------|---------|
 | -           | -     | [All attributes inherited from feature] | -                 | -       |
-| Menu        | One of: File, view, pool, server, vm, storage, templates, tools, help | The XenCenter menu you would like this to appear under. | Required | - |
-| Serialized  | One of: obj, global | If set to obj, the menu item will disable itself if its command is already running against the selected object. If set to global only one instance of its command will be allowed to run at a time regardless of what is selected. | Optional | - |
-| Contextmenu | One of: none, pool, server, vm, storage, template, folder | An additional context menu you would like this menu item to appear under. Unless you set 'none' the item will already be present on the context menu that relates to the 'menu' attribute (if such a context menu exists). | Optional | [value for menu] |
+| `menu`        | One of: file, view, pool, server, vm, storage, templates, tools, help | The XenCenter menu you would like this to appear under. | Required | - |
+| `serialized`  | One of: obj, global | If set to obj, the menu item disables itself if its command is already running against the selected object. If set to global, only one instance of its command is allowed to run at a time regardless of what is selected. | Optional | - |
+| `contextmenu` | One of: none, pool, server, vm, storage, template, folder | An extra context menu you would like this menu item to appear under. Unless you set 'none', the item is already present on the context menu that relates to the menu attribute (if such a context menu exists). | Optional | [value for menu] |
 
-## Features: GroupMenuItem XML Attributes
+## GroupMenuItem XML Attributes
 
 > **Important:**
 >
-> The inherited feature attribute 'name' is required and your plug-in will not load unless it is set
+> The inherited feature attribute 'name' is required. If it is not set, your plug-in fails to load.
 
 Each GroupMenuItem feature can contain as many MenuItem child nodes as you would like.
 
 | Key         | Value | Description                             | Optional/Required | Default  |
 |-------------|-------|-----------------------------------------|-------------------|----------|
 | -           | -     | [All attributes inherited from feature] | -                 | -        |
-| menu        | One of: File, view, pool, server, vm, storage, templates, tools, help | The XenCenter menu you would like this to appear under. | Required | - |
-| contextmenu | One of: none, pool, server, vm, storage, template, folder | An additional context menu you would like this menu item to appear under. Unless you set 'none' the item will already be present on the context menu that relates to the 'menu' attribute (if such a context menu exists). | Optional | [value for menu] |
+| `menu`        | One of: File, view, pool, server, vm, storage, templates, tools, help | The XenCenter menu you would like this to appear under. | Required | - |
+| `contextmenu` | One of: none, pool, server, vm, storage, template, folder | An extra context menu you would like this menu item to appear under. Unless you set 'none' the item is already present on the context menu that relates to the 'menu' attribute (if such a context menu exists). | Optional | [value for menu] |
 
-## Features: TabPage
+## TabPage
 
-Tab page features load a URL to display as an extra tab inside XenCenter. In this way they can be used to allow access to web management consoles or to add additional user interface features into XenCenter.
+Tab page features load a URL to display as an extra tab inside XenCenter. These tabs can be used to allow access to web management consoles or to add extra user interface features into XenCenter.
 
 > **Note:**
 >
-> All local HTML and JavaScript examples in this section are using the modified JQuery libraries for RPC calls through XenCenter as well as the vanilla JQuery base library v1.3.2
+> All local HTML and JavaScript examples in this section use the modified jQuery libraries for RPC calls through XenCenter in addition to the jQuery base library v1.3.2
 
-![A screenshot of the message board example plugin.](media/messageboard-screenshot.png)
+![A screenshot of the message board example plug-in.](media/messageboard-screenshot.png)
 
-## Features: TabPage XML Attributes
+### TabPage XML Attributes
 
 > **Important:**
 >
-> -  The inherited feature attribute 'name' is required and your plug-in will not load unless it is set
-> -  The 'url' attribute is required and your plug-in will not load unless it is set
+> -  The inherited feature attribute 'name' is required. If it is not set, your plug-in fails to load.
+> -  The 'url' attribute is required. If it is not set, your plug-in fails to load.
 
 | Key            | Value         | Description                             | Optional/Required | Default  |
 |----------------|---------------|-----------------------------------------|-------------------|----------|
 | -              | -             | [All attributes inherited from feature] | -                 | -        |
-| url            | [string]      | The local or remote URL where the HTML page to load can be found. | Required | - |
-| context-menu   | true or false | Whether you would like the context menu for this html page to be enabled. | Optional | false |
-| xencenter-only | true or false | If set, this TabPage will appear when the XenCenter node is selected in the resource list and nowhere else. | Optional | false |
-| relative       | true or false | If set, the 'url' attribute will be interpreted as relative to the XenCenter install directory. | Optional | false |
-| help-link      | [string]      | The URL to launch in a separate browser when the user requests for help on the tab page. | Optional | - |
-| credentials    | true or false | Indicates that the webpage is using scripting and wishes to use XenCenter's session credentials to interact with the server. This sets `window.external.SessionUuid` and `window.external.SessionUrl` for scripting access. **Warning:** By exposing these variables, you are allowing external webpages access to your server. | Optional | false |
-| console        | true or false | Indicates that this tab page is meant to replace the standard XenCenter console. | Optional | false |
+| `url`            | [string]      | The local or remote URL to load the HTML page from | Required | -      |
+| `context-menu`   | true or false | Whether you would like the context menu for this HTML page to be enabled. | Optional | false |
+| `xencenter-only` | true or false | If set, this TabPage appears when the XenCenter node is selected in the resource list and nowhere else. | Optional | false |
+| `relative`       | true or false | If set, the `url` attribute is interpreted as relative to the XenCenter install directory. | Optional | false |
+| `help-link`      | [string]      | The URL to launch in a separate browser when the user requests for help on the tab page. | Optional | - |
+| `credentials`    | true or false | Indicates that the webpage is using scripting and wants to use XenCenter's session credentials to interact with the server. This sets `window.external.SessionUuid` and `window.external.SessionUrl` for scripting access. **Warning:** By exposing these variables, you are allowing external webpages access to your server. | Optional | false |
+| `console`        | true or false | Indicates that this tab page is meant to replace the standard XenCenter console. | Optional | false |
 
-## Features: TabPage Javascript API – Introduction
+### TabPage Javascript API
 
-Using some modified JQuery libraries to pass XML-RPC calls through XenCenter it is possible for your tab page to communicate with the server using JavaScript. XenCenter provides a scripting object which contains the following public variables:
+Using some modified jQuery libraries to pass XML-RPC calls through XenCenter it is possible for your tab page to communicate with the server using JavaScript. XenCenter provides a scripting object which contains the following public variables:
 
 -  SessionUuid
 -  SessionUrl
 -  SelectedObjectType
 -  SelectedObjectRef
 
-These can be accessed through the window.external object in JavaScript and used to make server API calls:
+These variables can be accessed through the `window.external` object in JavaScript and used to make server API calls:
 
 ```javascript
 // Retrieves the other config map for the currently selected XenCenter
@@ -242,21 +241,21 @@ In this example we create an RPC object using 4 parameters:
 
 1.  Notifying that the RPC call is carrying XML (as opposed to JSON)
 
-2.  The function to execute (`GetCurrentOtherConfig`) which fires off an API call - the modified JQuery library packages up the API call as an XML-RPC request and hands it to XenCenter.
+2.  The function to execute (`GetCurrentOtherConfig`) which fires off an API call - the modified jQuery library packages up the API call as an XML-RPC request and hands it to XenCenter.
 
-    Notice that the function name for the callback is passed as an additional first parameter to the API call.
+    Notice that the function name for the callback is passed as an extra first parameter to the API call.
 
 3.  We don't specify a version number for the XML (`null`) which is interpreted as 1.0.
 
 4.  We pass a description of the API call we want to make inside `GetCurrentOtherConfig` so the appropriate objects are created for the function to access.
 
-## Features: TabPage Javascript API – Required Functions
+#### Required Functions
 
 > **Important:**
 >
 > It is required that you define a `RefreshPage` function in your JavaScript.
 
-XenCenter will call this function every time it reloads the HTML page or adjusts the variables on the scripting object. Your code should be structured so that the RefreshPage function can easily tear down and rebuild the state of the page:
+XenCenter calls this function every time it reloads the HTML page or adjusts the variables on the scripting object. Structure your code so that the `RefreshPage` function can easily tear down and rebuild the state of the page:
 
 ```javascript
 $(document).ready(RefreshPage);
@@ -275,11 +274,11 @@ function RefreshPage()
 }
 ```
 
-Setting the function to be called at `$(document).ready()` ensures there are no race conditions between XenCenter signaling that the page should refresh and the page itself being ready to receive these requests.
+Setting the function to be called at `$(document).ready()` ensures there are no race conditions between XenCenter signaling to the page to refresh and the page itself being ready to receive these requests.
 
-## Features: TabPage Javascript API – Receiving XenCenter Callbacks
+#### Receiving XenCenter Callbacks
 
-When you make an RPC object and get XenCenter to pass through an API call to the server, you specify a callback function. When the XML-RPC request returns from the server, the callback function is invoked by XenCenter, passing in a JSON object which contains the result as a parameter. Look at `RefreshDescription` below:
+When you make an RPC object and get XenCenter to pass through an API call to the server, you specify a callback function. When the XML-RPC request returns from the server, XenCenter invokes the callback function and passes in a JSON object that contains the result as a parameter. Look at `RefreshDescription` in the following example:
 
 ```javascript
 // The result object of any xmlrpc call to the server contains:
@@ -342,10 +341,10 @@ function ShowDescription(DescriptionResult)
 }
 ```
 
-## Features: TabPage Replacement Consoles
+### TabPage Replacement Consoles
 
-This feature allows you to specify that your tab page feature should replace the standard console tab page in XenCenter. It is often used when a VM has its own web interface and the standard console tab page does not need to be seen.
+This feature allows you to specify that your tab page feature replaces the standard console tab page in XenCenter. It is often used when a VM has its own web interface and the standard console tab page does not need to be seen.
 
 To activate this feature, add the attribute `console="True"` to the `TabPageFeature` tag in your configuration file.
 
-If the web page you have specified in your tab page feature cannot be reached by XenCenter, then the standard console tab page will be returned and your tab page feature will be hidden. If the tab page feature can be reached later on, it will be automatically restored, and the standard console tab page hidden.
+If XenCenter cannot reach the webpage you have specified in your tab page feature, the standard console tab page is returned and your tab page feature is hidden. If the tab page feature can be reached later on, it is automatically restored, and the standard console tab page hidden.

@@ -1,12 +1,11 @@
 # XML Configuration File
 
-In your plug-in XML configuration file, you define which menu items and tab items you would like to appear in XenCenter. These are referred to as *features*, and you can customize each one using the XML attributes described in this specification.
+Use your plug-in XML configuration file to define the menu items and tab items you want to appear in XenCenter. These items are referred to as *features*, and you can customize each one using the XML attributes described in this specification.
 
 **Example:** A sample XML configuration file
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE XenCenterPlugin PUBLIC "-//XENCENTERPLUGIN//DTD XENCENTERPLUGIN1//EN" "xencenter-1.dtd">
 
 <XenCenterPlugin
@@ -62,13 +61,13 @@ In your plug-in XML configuration file, you define which menu items and tab item
 </XenCenterPlugin>
 ```
 
-If your configuration file is invalid, XenCenter logs an error and the plug-in is ignored. You can enable, disable and view errors with your plug-in configuration file in the XenCenter plug-ins dialog.
+If your configuration file is invalid, XenCenter logs an error and the plug-in is ignored. You can enable, disable, and view errors with your plug-in configuration file in the **XenCenter plug-ins** dialog.
 
 > **Note:**
 >
-> Errors will only be shown in the dialog your configuration file XML can be parsed. If your plug-in is not listed in the dialog use the XenCenter log file to debug your XML.
+> Errors are only shown in the dialog when your configuration file XML can be parsed. If your plug-in is not listed in the dialog, use the XenCenter log file to debug your XML.
 
-## XML Configuration File: Basic Structure
+## Basic Structure
 
 The XML elements in a configuration file have the following structure:
 
@@ -94,19 +93,19 @@ With the following XML attributes:
 
 > **Important:**
 >
-> The ‘version’ attribute is required; your plug-in will not load unless it is set.
+> The `version` attribute is required. If it is not set, your plug-in fails to load.
 
 | Key         | Value    | Description                                               | Optional/Required | Default |
 |-------------|----------|-----------------------------------------------------------|-------------------|---------|
-| version     | 1        | The XenCenter plug-in version this plug-in was written for. Currently only version 1 is in use. | Required | - |
-| label       | [string] | Used in XenCenter as a user-friendly replacement for the plug-in name as dictated by the directory structure. | Optional | - |
-| description | [string] | A short description of this plug-in to show in XenCenter. | Optional          | - |
-| copyright   | [string] | A copyright notice for this plug-in to show in XenCenter  | Optional          | - |
-| link        | [string] | A URL web resource for the plug-in to show in XenCenter   | Optional          | - |
+| `version`     | 1        | The XenCenter plug-in version this plug-in was written for. Currently only version 1 is in use. | Required | - |
+| `label`       | [string] | Used in XenCenter as a user-friendly replacement for the plug-in name as dictated by the directory structure. | Optional | - |
+| `description` | [string] | A short description of this plug-in to show in XenCenter. | Optional          | - |
+| `copyright`   | [string] | A copyright notice for this plug-in to show in XenCenter  | Optional          | - |
+| `link`        | [string] | A URL web resource for the plug-in to show in XenCenter   | Optional          | - |
 
-## XML Configuration File: XenSearch
+## XenSearch
 
-You can include XenSearch definitions in your plug-in configuration file for features to reference. They can use these searches to tell XenCenter when they wish to be enabled or shown.
+You can include XenSearch definitions in your plug-in configuration file for features to reference. They can use these searches to tell XenCenter when they want to be enabled or shown.
 
 **Example:** A MenuItem feature is using a XenSearch definition to restrict itself to shut down VMs:
 
@@ -160,19 +159,13 @@ You can include XenSearch definitions in your plug-in configuration file for fea
 </XenCenterPlugin>
 ```
 
-The best way to get a XenSearch definition into your plug-in configuration file is to construct it in XenCenter, export it to a local file and copy it into your configuration file.
+To get a XenSearch definition into your plug-in configuration file construct it in XenCenter, export it to a local file, and copy it into your configuration file.
 
-## XML Configuration File: Shared RBAC Method List
+## Shared RBAC Method List
 
-> **Important:**
->
-> Shared method list definitions were first added in version 5.6 Feature Pack 1.
->
-> To configure RBAC support for your plug-in in version 5.6 you will need to define the list of required methods on each feature command individually. See ‘Commands and RBAC’ for more information.*
+When the user is connected to a server running Role Based Access Control, your plug-in might not have permission to execute all the server API calls you need. A method list can be defined for each command to warn XenCenter which API calls are needed before the plug-in is even executed. See ‘Commands and RBAC’ for more information.
 
-When the user is connected to a server running Role Based Access Control your plug-in may not have permission to execute all the server API calls you need. A method list can be defined for each command to warn XenCenter which API calls will be needed before the plug-in is even executed. See ‘Commands and RBAC’ for more information.
-
-By defining a shared RBAC method list as a child of your XenCenterPlugin node you can have multiple commands share the same common list of methods:
+By defining a shared RBAC method list as a child of your XenCenterPlugin node you can have multiple commands share a common list of methods:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -212,6 +205,6 @@ By defining a shared RBAC method list as a child of your XenCenterPlugin node yo
 </XenCenterPlugin>
 ```
 
-This is purely for convenience and is equivalent to defining the method list on each command separately. When both `required_method_list` and `required_methods` are set on a command, `required_methods` is taken by preference.
+This capability is purely for convenience and is equivalent to defining the method list on each command separately. When both `required_method_list` and `required_methods` are set on a command, `required_methods` takes precedence.
 
 For syntax and further information see ‘Commands and RBAC’.
