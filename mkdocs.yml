@@ -38,6 +38,9 @@ extra:
     language: 'en'
     tokenizer: '[\s\-\.]+'
 
+plugins: 
+  - search
+   
 markdown_extensions:
   - admonition
   - codehilite
