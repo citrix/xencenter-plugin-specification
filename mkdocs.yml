@@ -34,6 +34,8 @@ extra:
       link: https://twitter.com/citrixdeveloper
     - type: linkedin
       link: https://www.linkedin.com/company/citrix/
+  search:
+    tokenizer: '[\s\-\.]+'
 
 markdown_extensions:
   - admonition
