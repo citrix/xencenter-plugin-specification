@@ -1,8 +1,9 @@
 site_name: Citrix XenCenter Plugin Specification
 site_description: Citrix XenCenter Plugin Specification
 site_title: Developer Documentation
+site_url: https://developer-docs.citrix.com/
 
-copyright: 'Copyright &copy; 1999-2019 Citrix Systems, Inc. All rights reserved. '
+copyright: 'Copyright &copy; 1999-2020 Citrix Systems, Inc. All rights reserved. '
 
 extra_css:
   - 'assets/stylesheets/extra.css'
